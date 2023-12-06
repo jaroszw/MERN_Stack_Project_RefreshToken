@@ -1,0 +1,11 @@
+node_modules
+logs
+.env
+
+/server/node_modules
+/server/logs
+/server/.env
+
+/client/node_modules
+/client/logs
+/client/.env
