@@ -1,7 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const path = require("path");
-const { logger } = require("./middleware/logger");
+const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+const { logger } = require('./middleware/logger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,20 +10,18 @@ dotenv.config();
 app.use(logger);
 app.use(express.json());
 
-console.log(path.join(__dirname, "./views", "404.html"));
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', require('./routes/root'));
 
-app.use("/", express.static(path.join(__dirname, "public")));
-app.use("/", require("./routes/root"));
-
-app.all("*", (req, res) => {
+app.all('*', (req, res) => {
   res.status(404);
-  console.log(req.accepts("html"));
-  if (req.accepts("html")) {
-    res.sendFile(path.join(__dirname, "views", "404.html"));
-  } else if (req.accepts("json")) {
-    res.json({ message: "404 Not found" });
+  console.log(req.accepts('html'));
+  if (req.accepts('html')) {
+    res.sendFile(path.join(__dirname, 'views', '404.html'));
+  } else if (req.accepts('json')) {
+    res.json({ message: '404 Not found' });
   } else {
-    res.type("text").send("404 Not found");
+    res.type('text').send('404 Not found');
   }
 });
 
