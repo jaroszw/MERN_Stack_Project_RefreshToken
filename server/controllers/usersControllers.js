@@ -7,7 +7,7 @@ const acynsHanlder = require("express-async-handler");
 const getAllUsers = acynsHanlder(async (req, res) => {
   const users = await User.find().select("-password").lean();
 
-  if (!users) {
+  if (!users?.length) {
     return res.status(400).json({ message: "No users found" });
   }
 
@@ -84,7 +84,7 @@ const updateUser = acynsHanlder(async (req, res) => {
   res.json({ message: `${updatedUser.username} updated` });
 });
 
-// Delete
+// DELETE USER
 const deleteUser = acynsHanlder(async (req, res) => {
   const { id } = req.body;
 
@@ -92,9 +92,9 @@ const deleteUser = acynsHanlder(async (req, res) => {
     return res.status(400).json({ message: "User ID required" });
   }
 
-  const notes = await Note.findOne({ user: id }).lean().exec();
+  const note = await Note.findOne({ user: id }).lean().exec();
 
-  if (notes?.length) {
+  if (note) {
     return res.status(400).json({ message: "User has assigned notes" });
   }
 
